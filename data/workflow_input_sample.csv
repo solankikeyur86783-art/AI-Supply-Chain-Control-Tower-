@@ -1,0 +1,13 @@
+﻿order_id,city,lat,lon,supplier,supplier_on_time,shipping_mode,sched_days,days_in_transit,order_value,freight_cost,profit,sku,stock,daily_demand,lead_time_days
+ORD-1001,Mumbai,19.07,72.87,Shenzhen Tech,0.72,Standard Class,6,8,5200,620,410,SKU-01,120,30,5
+ORD-1002,Chennai,13.08,80.27,Shenzhen Tech,0.72,Second Class,4,3,3100,210,520,SKU-02,400,20,6
+ORD-1003,Rotterdam,51.92,4.48,Nordic Parts,0.94,First Class,2,2,2800,150,610,SKU-03,90,15,7
+ORD-1004,Singapore,1.35,103.82,Nordic Parts,0.94,Same Day,1,1,900,210,-40,SKU-04,30,12,4
+ORD-1005,Dubai,25.2,55.27,Gulf Traders,0.85,Standard Class,5,7,4100,380,300,SKU-05,60,25,5
+ORD-1006,Hamburg,53.55,9.99,Nordic Parts,0.94,Standard Class,5,5,6000,400,900,SKU-06,800,40,8
+ORD-1007,Los Angeles,34.05,-118.24,Pacific Supply,0.78,Second Class,4,6,3500,640,-120,SKU-07,55,18,6
+ORD-1008,Kolkata,22.57,88.36,Gulf Traders,0.85,Standard Class,6,6,2200,180,260,SKU-08,700,10,6
+ORD-1009,Ahmedabad,23.02,72.57,Shenzhen Tech,0.72,First Class,2,3,1500,240,90,SKU-09,25,12,5
+ORD-1010,Manila,14.6,120.98,Pacific Supply,0.78,Standard Class,6,9,3900,500,200,SKU-10,200,35,7
+ORD-1011,Colombo,6.93,79.86,Gulf Traders,0.85,Second Class,4,4,1800,110,240,SKU-11,150,8,5
+ORD-1012,Shanghai,31.23,121.47,Pacific Supply,0.78,Standard Class,5,5,7200,500,1100,SKU-12,90,30,9

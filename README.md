@@ -97,6 +97,8 @@ Each shipment record has these fields:
 
 `order_id`, `city`, `lat`, `lon`, `supplier`, `supplier_on_time`, `shipping_mode`, `sched_days`, `days_in_transit`, `order_value`, `freight_cost`, `profit`, `sku`, `stock`, `daily_demand`, `lead_time_days`
 
+A ready-to-use copy of the 12 sample orders from the workflow is in `data/workflow_input_sample.csv`.
+
 ## Tech stack
 
 - **n8n**: workflow orchestration (Code, HTTP Request, Merge, IF and Discord nodes)
@@ -158,7 +160,7 @@ Click **Execute Workflow**, then press **Approve** or **Reject** in Discord.
 
 ```
 workflows/   n8n workflow JSON
-data/        sample CSV datasets (illustrative)
+data/        sample CSV datasets (workflow_input_sample.csv matches the workflow, the others are illustrative)
 docs/        screenshots
 .env.example list of values you need to configure
 ```
@@ -174,3 +176,4 @@ docs/        screenshots
 ## License
 
 MIT
+
