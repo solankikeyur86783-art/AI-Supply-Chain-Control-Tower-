@@ -1,0 +1,6 @@
+﻿sku,product_name,warehouse,stock_on_hand,reorder_point,avg_daily_demand,supplier,lead_time_days
+SKU-01,Wireless Earbuds,Los Angeles,120,150,18,SoundTech Co,21
+SKU-02,Smart Watch,Dubai,400,200,25,TimeWear Ltd,18
+SKU-03,Power Bank 20000mAh,New York,60,100,12,ChargeMax,14
+SKU-04,USB-C Cable,Rotterdam,900,300,40,CablePro,10
+SKU-05,Bluetooth Speaker,Singapore,75,120,15,SoundTech Co,20

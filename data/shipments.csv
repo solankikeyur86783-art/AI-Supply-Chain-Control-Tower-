@@ -1,0 +1,7 @@
+﻿shipment_id,order_id,origin,destination,carrier,mode,status,eta,delay_days,freight_cost_usd
+SHP-5001,ORD-1001,Shenzhen,Los Angeles,OceanLine,sea,DELAYED,2026-10-06,4,3200
+SHP-5002,ORD-1002,Mumbai,Dubai,GulfCargo,sea,ON_TIME,2026-10-04,0,1800
+SHP-5003,ORD-1003,Hamburg,New York,AirExpress,air,DELAYED,2026-10-03,2,5200
+SHP-5004,ORD-1004,Shanghai,Rotterdam,OceanLine,sea,ON_TIME,2026-10-09,0,2600
+SHP-5005,ORD-1005,Chennai,Singapore,AsiaFreight,sea,DELAYED,2026-10-08,4,2100
+SHP-5006,ORD-1006,Shenzhen,Chicago,AirExpress,air,ON_TIME,2026-10-05,0,4800
