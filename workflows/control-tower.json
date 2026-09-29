@@ -1,0 +1,565 @@
+{
+  "name": "AI Supply Chain Control Tower",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "fc200e24-30f5-45c6-8fce-34defe9914e8",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        3568,
+        1584
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "60337b6f-4f90-49b2-8fc2-83fee13ee880",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        3568,
+        1760
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// SAMPLE DATA (DataCo-style). Baad me is node ko Google Sheets / Postgres node se replace kar do.\nconst data = [\n {\n  \"order_id\": \"ORD-1001\",\n  \"city\": \"Mumbai\",\n  \"lat\": 19.07,\n  \"lon\": 72.87,\n  \"supplier\": \"Shenzhen Tech\",\n  \"supplier_on_time\": 0.72,\n  \"shipping_mode\": \"Standard Class\",\n  \"sched_days\": 6,\n  \"days_in_transit\": 8,\n  \"order_value\": 5200,\n  \"freight_cost\": 620,\n  \"profit\": 410,\n  \"sku\": \"SKU-01\",\n  \"stock\": 120,\n  \"daily_demand\": 30,\n  \"lead_time_days\": 5\n },\n {\n  \"order_id\": \"ORD-1002\",\n  \"city\": \"Chennai\",\n  \"lat\": 13.08,\n  \"lon\": 80.27,\n  \"supplier\": \"Shenzhen Tech\",\n  \"supplier_on_time\": 0.72,\n  \"shipping_mode\": \"Second Class\",\n  \"sched_days\": 4,\n  \"days_in_transit\": 3,\n  \"order_value\": 3100,\n  \"freight_cost\": 210,\n  \"profit\": 520,\n  \"sku\": \"SKU-02\",\n  \"stock\": 400,\n  \"daily_demand\": 20,\n  \"lead_time_days\": 6\n },\n {\n  \"order_id\": \"ORD-1003\",\n  \"city\": \"Rotterdam\",\n  \"lat\": 51.92,\n  \"lon\": 4.48,\n  \"supplier\": \"Nordic Parts\",\n  \"supplier_on_time\": 0.94,\n  \"shipping_mode\": \"First Class\",\n  \"sched_days\": 2,\n  \"days_in_transit\": 2,\n  \"order_value\": 2800,\n  \"freight_cost\": 150,\n  \"profit\": 610,\n  \"sku\": \"SKU-03\",\n  \"stock\": 90,\n  \"daily_demand\": 15,\n  \"lead_time_days\": 7\n },\n {\n  \"order_id\": \"ORD-1004\",\n  \"city\": \"Singapore\",\n  \"lat\": 1.35,\n  \"lon\": 103.82,\n  \"supplier\": \"Nordic Parts\",\n  \"supplier_on_time\": 0.94,\n  \"shipping_mode\": \"Same Day\",\n  \"sched_days\": 1,\n  \"days_in_transit\": 1,\n  \"order_value\": 900,\n  \"freight_cost\": 210,\n  \"profit\": -40,\n  \"sku\": \"SKU-04\",\n  \"stock\": 30,\n  \"daily_demand\": 12,\n  \"lead_time_days\": 4\n },\n {\n  \"order_id\": \"ORD-1005\",\n  \"city\": \"Dubai\",\n  \"lat\": 25.2,\n  \"lon\": 55.27,\n  \"supplier\": \"Gulf Traders\",\n  \"supplier_on_time\": 0.85,\n  \"shipping_mode\": \"Standard Class\",\n  \"sched_days\": 5,\n  \"days_in_transit\": 7,\n  \"order_value\": 4100,\n  \"freight_cost\": 380,\n  \"profit\": 300,\n  \"sku\": \"SKU-05\",\n  \"stock\": 60,\n  \"daily_demand\": 25,\n  \"lead_time_days\": 5\n },\n {\n  \"order_id\": \"ORD-1006\",\n  \"city\": \"Hamburg\",\n  \"lat\": 53.55,\n  \"lon\": 9.99,\n  \"supplier\": \"Nordic Parts\",\n  \"supplier_on_time\": 0.94,\n  \"shipping_mode\": \"Standard Class\",\n  \"sched_days\": 5,\n  \"days_in_transit\": 5,\n  \"order_value\": 6000,\n  \"freight_cost\": 400,\n  \"profit\": 900,\n  \"sku\": \"SKU-06\",\n  \"stock\": 800,\n  \"daily_demand\": 40,\n  \"lead_time_days\": 8\n },\n {\n  \"order_id\": \"ORD-1007\",\n  \"city\": \"Los Angeles\",\n  \"lat\": 34.05,\n  \"lon\": -118.24,\n  \"supplier\": \"Pacific Supply\",\n  \"supplier_on_time\": 0.78,\n  \"shipping_mode\": \"Second Class\",\n  \"sched_days\": 4,\n  \"days_in_transit\": 6,\n  \"order_value\": 3500,\n  \"freight_cost\": 640,\n  \"profit\": -120,\n  \"sku\": \"SKU-07\",\n  \"stock\": 55,\n  \"daily_demand\": 18,\n  \"lead_time_days\": 6\n },\n {\n  \"order_id\": \"ORD-1008\",\n  \"city\": \"Kolkata\",\n  \"lat\": 22.57,\n  \"lon\": 88.36,\n  \"supplier\": \"Gulf Traders\",\n  \"supplier_on_time\": 0.85,\n  \"shipping_mode\": \"Standard Class\",\n  \"sched_days\": 6,\n  \"days_in_transit\": 6,\n  \"order_value\": 2200,\n  \"freight_cost\": 180,\n  \"profit\": 260,\n  \"sku\": \"SKU-08\",\n  \"stock\": 700,\n  \"daily_demand\": 10,\n  \"lead_time_days\": 6\n },\n {\n  \"order_id\": \"ORD-1009\",\n  \"city\": \"Ahmedabad\",\n  \"lat\": 23.02,\n  \"lon\": 72.57,\n  \"supplier\": \"Shenzhen Tech\",\n  \"supplier_on_time\": 0.72,\n  \"shipping_mode\": \"First Class\",\n  \"sched_days\": 2,\n  \"days_in_transit\": 3,\n  \"order_value\": 1500,\n  \"freight_cost\": 240,\n  \"profit\": 90,\n  \"sku\": \"SKU-09\",\n  \"stock\": 25,\n  \"daily_demand\": 12,\n  \"lead_time_days\": 5\n },\n {\n  \"order_id\": \"ORD-1010\",\n  \"city\": \"Manila\",\n  \"lat\": 14.6,\n  \"lon\": 120.98,\n  \"supplier\": \"Pacific Supply\",\n  \"supplier_on_time\": 0.78,\n  \"shipping_mode\": \"Standard Class\",\n  \"sched_days\": 6,\n  \"days_in_transit\": 9,\n  \"order_value\": 3900,\n  \"freight_cost\": 500,\n  \"profit\": 200,\n  \"sku\": \"SKU-10\",\n  \"stock\": 200,\n  \"daily_demand\": 35,\n  \"lead_time_days\": 7\n },\n {\n  \"order_id\": \"ORD-1011\",\n  \"city\": \"Colombo\",\n  \"lat\": 6.93,\n  \"lon\": 79.86,\n  \"supplier\": \"Gulf Traders\",\n  \"supplier_on_time\": 0.85,\n  \"shipping_mode\": \"Second Class\",\n  \"sched_days\": 4,\n  \"days_in_transit\": 4,\n  \"order_value\": 1800,\n  \"freight_cost\": 110,\n  \"profit\": 240,\n  \"sku\": \"SKU-11\",\n  \"stock\": 150,\n  \"daily_demand\": 8,\n  \"lead_time_days\": 5\n },\n {\n  \"order_id\": \"ORD-1012\",\n  \"city\": \"Shanghai\",\n  \"lat\": 31.23,\n  \"lon\": 121.47,\n  \"supplier\": \"Pacific Supply\",\n  \"supplier_on_time\": 0.78,\n  \"shipping_mode\": \"Standard Class\",\n  \"sched_days\": 5,\n  \"days_in_transit\": 5,\n  \"order_value\": 7200,\n  \"freight_cost\": 500,\n  \"profit\": 1100,\n  \"sku\": \"SKU-12\",\n  \"stock\": 90,\n  \"daily_demand\": 30,\n  \"lead_time_days\": 9\n }\n];\nreturn data.map(o => ({ json: o }));"
+      },
+      "id": "170f98f8-c5d1-4dea-aa34-cc91919c3331",
+      "name": "Load Shipments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3920,
+        1664
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.open-meteo.com/v1/forecast?latitude={{ $json.lat }}&longitude={{ $json.lon }}&daily=precipitation_sum,wind_speed_10m_max&forecast_days=2&timezone=auto",
+        "options": {}
+      },
+      "id": "f5ca18a6-f3f8-478f-b38c-ae2d9067f384",
+      "name": "Get Weather (Open-Meteo)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4064,
+        1488
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// DELAY AGENT: schedule lateness + weather (Open-Meteo) + supplier reliability\nconst ships = $('Load Shipments').all().map(i => i.json);\nconst weather = $input.all().map(i => i.json);\n\nconst scored = ships.map((s, i) => {\n  const w = weather[i] && weather[i].daily ? weather[i].daily : null;\n  const rain = w ? Math.max(...w.precipitation_sum.map(Number)) : 0;\n  const wind = w ? Math.max(...w.wind_speed_10m_max.map(Number)) : 0;\n  let score = 0; const reasons = [];\n\n  const late = s.days_in_transit - s.sched_days;\n  if (late > 0) { score += Math.min(40, 20 + late * 8); reasons.push(`already ${late}d behind schedule`); }\n  if (rain >= 20) { score += 25; reasons.push(`heavy rain forecast (${rain}mm)`); }\n  else if (rain >= 10) { score += 12; reasons.push(`rain forecast (${rain}mm)`); }\n  if (wind >= 50) { score += 15; reasons.push(`strong winds (${wind}km/h)`); }\n  if (s.supplier_on_time < 0.8) { score += 15; reasons.push(`weak supplier on-time rate (${Math.round(s.supplier_on_time*100)}%)`); }\n  if (s.shipping_mode === 'Standard Class') score += 5;\n\n  score = Math.min(100, score);\n  const level = score >= 60 ? 'HIGH' : score >= 35 ? 'MEDIUM' : 'LOW';\n  return { order_id: s.order_id, city: s.city, supplier: s.supplier, score, level, reasons };\n});\n\nconst risky = scored.filter(x => x.level !== 'LOW').sort((a, b) => b.score - a.score);\nreturn [{ json: {\n  agent: 'delay',\n  total_shipments: scored.length,\n  high: scored.filter(x => x.level === 'HIGH').length,\n  medium: scored.filter(x => x.level === 'MEDIUM').length,\n  avg_score: Math.round(scored.reduce((a, b) => a + b.score, 0) / scored.length),\n  top_risks: risky.slice(0, 5)\n}}];"
+      },
+      "id": "ea0a6e30-e57a-45f7-9a0a-9181b6a3d891",
+      "name": "Delay Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4352,
+        1456
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// COST AGENT: freight cost vs order value, negative-margin orders\nconst ships = $input.all().map(i => i.json);\nconst flagged = [];\nlet totalFreight = 0, totalProfit = 0, totalValue = 0;\n\nfor (const s of ships) {\n  totalFreight += s.freight_cost; totalProfit += s.profit; totalValue += s.order_value;\n  const pct = s.freight_cost / s.order_value;\n  const reasons = [];\n  if (pct > 0.15) reasons.push(`freight is ${Math.round(pct*100)}% of order value`);\n  if (s.profit < 0) reasons.push(`negative profit (${s.profit})`);\n  if (reasons.length) flagged.push({ order_id: s.order_id, city: s.city, mode: s.shipping_mode, freight_pct: Math.round(pct*100), profit: s.profit, reasons });\n}\nreturn [{ json: {\n  agent: 'cost',\n  total_freight: totalFreight,\n  total_profit: totalProfit,\n  avg_freight_pct: Math.round(totalFreight / totalValue * 100),\n  flagged_count: flagged.length,\n  flagged: flagged.slice(0, 5)\n}}];"
+      },
+      "id": "4417f27d-40da-43dd-99ad-75d4a3f647fb",
+      "name": "Cost Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4304,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// INVENTORY AGENT: days of cover vs supplier lead time\nconst ships = $input.all().map(i => i.json);\nconst atRisk = [];\n\nfor (const s of ships) {\n  const cover = +(s.stock / s.daily_demand).toFixed(1);\n  if (cover < s.lead_time_days) {\n    const reorder = Math.ceil((s.lead_time_days + 7) * s.daily_demand - s.stock);\n    atRisk.push({ sku: s.sku, order_id: s.order_id, stock: s.stock, days_of_cover: cover, lead_time_days: s.lead_time_days, suggested_reorder_qty: reorder });\n  }\n}\natRisk.sort((a, b) => (a.days_of_cover - a.lead_time_days) - (b.days_of_cover - b.lead_time_days));\nreturn [{ json: { agent: 'inventory', stockout_risk_count: atRisk.length, at_risk: atRisk.slice(0, 5) } }];"
+      },
+      "id": "a75ac368-705a-4e9a-9af6-ac0d29a334b8",
+      "name": "Inventory Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4320,
+        1856
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "d3f43042-c437-480a-9692-90292d8a5fc9",
+      "name": "Collect Agent Reports",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        4544,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Merge ke teeno agent reports ko Groq (OpenAI-compatible) prompt me badalna\nconst reports = $input.all().map(i => i.json);\nconst byAgent = {};\nreports.forEach(r => byAgent[r.agent] = r);\n\nconst system = `You are the Orchestrator of an AI Supply Chain Control Tower.\nYou receive reports from a Delay Agent, a Cost Agent and an Inventory Agent.\nResolve conflicts between them (e.g. air freight fixes delay but hurts cost) and recommend concrete actions.\nReply with ONLY a valid JSON object (no markdown, no preamble) in this schema:\n{\"overall_risk\":\"LOW|MEDIUM|HIGH\",\"summary\":\"2 sentences\",\n\"recommendations\":[{\"action\":\"...\",\"reason\":\"...\",\"priority\":\"P1|P2|P3\",\"cost_impact\":\"e.g. +$400 or -$200\",\"affected\":[\"ORD-xxxx or SKU-xx\"]}]}\nGive 3 to 5 recommendations, most urgent first.`;\n\nreturn [{ json: { requestBody: {\n  model: $('CONFIG (yahan values paste karo)').first().json.groq_model,\n  temperature: 0.2,\n  max_tokens: 1500,\n  response_format: { type: 'json_object' },\n  messages: [\n    { role: 'system', content: system },\n    { role: 'user', content: 'Agent reports (JSON):\\n' + JSON.stringify(byAgent, null, 2) }\n  ]\n}}}];"
+      },
+      "id": "4840154c-77dc-4d09-8f99-1f27dcfda2de",
+      "name": "Build AI Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4768,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('CONFIG (yahan values paste karo)').first().json.groq_api_key }}"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.requestBody) }}",
+        "options": {}
+      },
+      "id": "88602cc7-b635-4e29-b939-f22461e8c934",
+      "name": "Orchestrator AI (Groq)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4992,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Groq ka JSON parse karke Discord (markdown) approval message banana\nconst text = ($json.choices && $json.choices[0] && $json.choices[0].message && $json.choices[0].message.content) || '';\nlet rec;\ntry { rec = JSON.parse(text.replace(/```json|```/g, '').trim()); }\ncatch (e) { rec = { overall_risk: 'UNKNOWN', summary: text.slice(0, 500), recommendations: [] }; }\n\nconst lines = (rec.recommendations || []).map((r, i) =>\n  `**${i + 1}. [${r.priority}] ${r.action}**\\n• Why: ${r.reason}\\n• Cost impact: ${r.cost_impact}\\n• Affected: ${(r.affected || []).join(', ')}`\n);\nlet message = `🚨 **Supply Chain Control Tower**\\n**Overall risk: ${rec.overall_risk}**\\n${rec.summary}\\n\\n` + lines.join('\\n\\n');\nif (message.length > 1900) message = message.slice(0, 1900) + '\\n…(trimmed)';  // Discord limit 2000 chars\nreturn [{ json: { ...rec, approval_message: message } }];"
+      },
+      "id": "ad795d4c-589e-4417-afb0-46d92a66a29a",
+      "name": "Parse Recommendation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5200,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendAndWait",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('CONFIG (yahan values paste karo)').first().json.discord_guild_id }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('CONFIG (yahan values paste karo)').first().json.discord_channel_id }}",
+          "mode": "id"
+        },
+        "message": "={{ $json.approval_message }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Approve",
+            "disapproveLabel": "Reject"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 2
+            }
+          }
+        }
+      },
+      "id": "80ef9c4f-f0f2-451d-987f-67102fc3c408",
+      "name": "Human Approval (Discord)",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        5424,
+        1680
+      ],
+      "webhookId": "f6fd48c5-bfd4-4e56-a1ad-9368160a4c5e",
+      "credentials": {
+        "discordBotApi": {
+          "id": "VwPi0WF8qcoyjzbA",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "86389894-2b07-4a6e-8988-e3167814093f",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5fd47029-5189-4f5c-afd5-1472517c5b26",
+      "name": "Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        5648,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## AI Supply Chain Control Tower (Discord)\nImport > Execute Workflow > Discord me Approve/Reject dabao.\nResult usi channel me aayega. Google/Sheets ki zaroorat nahi.",
+        "height": 240,
+        "width": 720
+      },
+      "id": "dfc34018-d131-4db3-a629-fb02b9c64bd4",
+      "name": "Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3520,
+        1216
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('CONFIG (yahan values paste karo)').first().json.discord_guild_id }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('CONFIG (yahan values paste karo)').first().json.discord_channel_id }}",
+          "mode": "id"
+        },
+        "content": "=✅ **APPROVED. Team ko actions execute karne hain.**\n\n{{ $('Parse Recommendation').first().json.approval_message.slice(0, 1700) }}",
+        "options": {}
+      },
+      "id": "1f7543ce-ff51-4c3c-8c37-eb246e2170f2",
+      "name": "Notify Approved (Discord)",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        4352,
+        816
+      ],
+      "executeOnce": true,
+      "webhookId": "ea1af4b0-fd17-41c4-90df-f31d833af02e",
+      "credentials": {
+        "discordBotApi": {
+          "id": "VwPi0WF8qcoyjzbA",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e7a8eea1-0952-477c-9b8c-06bd41ec566a",
+              "name": "groq_api_key",
+              "value": "YOUR_GROQ_API_KEY",
+              "type": "string"
+            },
+            {
+              "id": "d-guild",
+              "name": "discord_guild_id",
+              "value": "YOUR_DISCORD_GUILD_ID",
+              "type": "string"
+            },
+            {
+              "id": "d-chan",
+              "name": "discord_channel_id",
+              "value": "YOUR_DISCORD_CHANNEL_ID",
+              "type": "string"
+            },
+            {
+              "id": "0092e944-d879-42c5-966d-4bfa0eba0e3b",
+              "name": "groq_model",
+              "value": "openai/gpt-oss-120b",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "90f73e20-a7ac-4d1d-a1c2-91969f77e099",
+      "name": "CONFIG (yahan values paste karo)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3712,
+        1664
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('CONFIG (yahan values paste karo)').first().json.discord_guild_id }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('CONFIG (yahan values paste karo)').first().json.discord_channel_id }}",
+          "mode": "id"
+        },
+        "content": "=❌ **REJECTED ya timeout.** Koi action nahi liya gaya.\nOverall risk: {{ $('Parse Recommendation').first().json.overall_risk }}",
+        "options": {}
+      },
+      "id": "1651eb2f-5799-49e6-940a-3acc838d05fb",
+      "name": "Notify Rejected (Discord)",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        4352,
+        1024
+      ],
+      "executeOnce": true,
+      "webhookId": "ea1af4b0-fd17-41c4-90df-f31d833af02e",
+      "credentials": {
+        "discordBotApi": {
+          "id": "VwPi0WF8qcoyjzbA",
+          "name": "Discord Bot account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "CONFIG (yahan values paste karo)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "CONFIG (yahan values paste karo)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Shipments": {
+      "main": [
+        [
+          {
+            "node": "Get Weather (Open-Meteo)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cost Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Inventory Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather (Open-Meteo)": {
+      "main": [
+        [
+          {
+            "node": "Delay Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delay Agent": {
+      "main": [
+        [
+          {
+            "node": "Collect Agent Reports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cost Agent": {
+      "main": [
+        [
+          {
+            "node": "Collect Agent Reports",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Inventory Agent": {
+      "main": [
+        [
+          {
+            "node": "Collect Agent Reports",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Collect Agent Reports": {
+      "main": [
+        [
+          {
+            "node": "Build AI Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build AI Prompt": {
+      "main": [
+        [
+          {
+            "node": "Orchestrator AI (Groq)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Recommendation": {
+      "main": [
+        [
+          {
+            "node": "Human Approval (Discord)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "Notify Approved (Discord)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Rejected (Discord)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Orchestrator AI (Groq)": {
+      "main": [
+        [
+          {
+            "node": "Parse Recommendation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIG (yahan values paste karo)": {
+      "main": [
+        [
+          {
+            "node": "Load Shipments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Human Approval (Discord)": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2a964c72-5bf7-4c66-8a03-c0a358dcf055",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9103808490d1f8dcfcdad0353050c08edcb8ff7e05047cf748ca3f42f40189b0"
+  },
+  "nodeGroups": [],
+  "id": "TyjPX8Vd3avmFQIx",
+  "tags": []
+}
+
+
